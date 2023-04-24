@@ -1,0 +1,44 @@
+### Backend ###
+.gradle/
+/build/
+.env
+.env.json
+.data
+/bin/
+/generated/
+
+### Frontend ###
+/src/main/resources/static
+/node_modules/
+stats.json
+/coverage/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS CODE ###
+.vscode/

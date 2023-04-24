@@ -1,0 +1,14 @@
+{
+    "name": "snake-game",
+    "version": "0.0.0",
+    "private": true,
+    "description": "Basic snake game, eventually seeking to have a \"perfect\" player AI",
+    "main": "src/index.ts",
+    "scripts": {
+        "build": "rm -r dist && tsc"
+    },
+    "license": "GPL-3.0-only",
+    "devDependencies": {
+        "typescript": "^5.0.4"
+    }
+}
