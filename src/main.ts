@@ -1,3 +1,4 @@
+import { Board } from "./Board.js";
 import { getContext } from "./getContext.js";
 
 export function main() {
@@ -11,7 +12,6 @@ export function main() {
 
     document.body.insertBefore(canvas, document.body.childNodes[0]);
 
-    const ctx = getContext();
-    ctx.fillStyle = "red";
-    ctx.fillRect(0, 0, 80, 80);
+    const board = new Board(12, 64, 2);
+    board.draw(getContext());
 }
