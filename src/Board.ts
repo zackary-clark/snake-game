@@ -1,7 +1,6 @@
 export class Board {
 
     private size: number;
-    private pixelsPerSquare: number;
     private borderSize: number;
 
     private x: number;
@@ -9,7 +8,7 @@ export class Board {
 
     private filled: boolean[][];
 
-    constructor(size: number, pixelsPerSquare: number, borderSize: number) {
+    constructor(size: number, borderSize: number) {
         const board: boolean[][] = Array(size);
         for (let i = 0; i < size; i++) {
             board[i] = Array(size).fill(false);
@@ -17,42 +16,41 @@ export class Board {
         this.filled = board;
 
         this.size = size;
-        this.pixelsPerSquare = pixelsPerSquare;
         this.borderSize = borderSize;
         this.x = 0;
         this.y = 0;
     }
 
-    public draw(context: CanvasRenderingContext2D) {
+    public draw(context: CanvasRenderingContext2D, pixelsPerSquare: number) {
         this.x = 0;
         this.y = 0;
-        this.drawHorizontalBorderLine(context);
+        this.drawHorizontalBorderLine(context, pixelsPerSquare);
         this.filled.forEach((row) => {
-            this.drawVerticalBorderLine(context);
+            this.drawVerticalBorderLine(context, pixelsPerSquare);
             row.forEach((squareFilled) => {
-                this.drawSquare(context, squareFilled);
-                this.drawVerticalBorderLine(context);
+                this.drawSquare(context, pixelsPerSquare, squareFilled);
+                this.drawVerticalBorderLine(context, pixelsPerSquare);
             });
             this.x = 0;
-            this.y += this.pixelsPerSquare;
-            this.drawHorizontalBorderLine(context);
+            this.y += pixelsPerSquare;
+            this.drawHorizontalBorderLine(context, pixelsPerSquare);
         });
     }
 
-    private drawSquare(context: CanvasRenderingContext2D, squareFilled: boolean) {
+    private drawSquare(context: CanvasRenderingContext2D, pixelsPerSquare: number, squareFilled: boolean) {
         context.fillStyle = squareFilled ? "blue" : "black";
-        context.fillRect(this.x, this.y, this.pixelsPerSquare, this.pixelsPerSquare);
-        this.x += this.pixelsPerSquare;
+        context.fillRect(this.x, this.y, pixelsPerSquare, pixelsPerSquare);
+        this.x += pixelsPerSquare;
     }
 
-    private drawVerticalBorderLine(context: CanvasRenderingContext2D) {
+    private drawVerticalBorderLine(context: CanvasRenderingContext2D, pixelsPerSquare: number) {
         context.fillStyle = "grey";
-        context.fillRect(this.x, this.y, this.borderSize, this.pixelsPerSquare);
+        context.fillRect(this.x, this.y, this.borderSize, pixelsPerSquare);
         this.x += this.borderSize;
     }
 
-    private drawHorizontalBorderLine(context: CanvasRenderingContext2D) {
-        const borderLength = this.borderSize + (this.size * this.pixelsPerSquare) + (this.size * this.borderSize);
+    private drawHorizontalBorderLine(context: CanvasRenderingContext2D, pixelsPerSquare: number) {
+        const borderLength = this.borderSize + (this.size * pixelsPerSquare) + (this.size * this.borderSize);
 
         context.fillStyle = "grey";
         context.fillRect(this.x, this.y, borderLength, this.borderSize);
