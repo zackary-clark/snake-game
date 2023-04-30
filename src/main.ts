@@ -1,8 +1,10 @@
 import { Board } from "./Board.js";
+import { Food } from "./Food.js";
 import { getContext } from "./getContext.js";
+import { Snake } from "./Snake.js";
 
-const BOARD_SIZE = 20;
-const BORDER_SIZE = 2;
+export const BOARD_SIZE = 20;
+export const BORDER_SIZE = 2;
 
 export function main() {
 
@@ -18,12 +20,15 @@ export function main() {
 
     document.body.insertBefore(canvas, document.body.childNodes[0]);
 
-    const board = new Board(BOARD_SIZE, BORDER_SIZE);
+    const board = new Board();
+    const snake = new Snake();
+    const food = new Food();
 
-    setInterval(() => tick(board, canvas), 50);
+    setInterval(() => tick(canvas, board, snake, food), 50);
 }
 
-function tick(board: Board, canvas: HTMLCanvasElement) {
+function tick(canvas: HTMLCanvasElement, board: Board, snake: Snake, food: Food) {
+    board.clear();
     const sizeLimit = Math.min(window.innerHeight, window.innerWidth);
 
     canvas.width = sizeLimit;
@@ -32,5 +37,9 @@ function tick(board: Board, canvas: HTMLCanvasElement) {
     const borderTotal = (BOARD_SIZE + 1) * BORDER_SIZE;
     const pixelsPerSquare = (sizeLimit - borderTotal) / BOARD_SIZE;
 
+    snake.forEach((x, y) => {
+        board.setColor(snake.color, x, y);
+    });
+    board.setColor(food.color, food.x, food.y);
     board.draw(getContext(), pixelsPerSquare);
 }
