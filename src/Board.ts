@@ -1,4 +1,6 @@
+import { BoardPiece } from "./BoardPiece.js";
 import { ColorHexValue } from "./ColorHexValue.js";
+import { getContext } from "./getContext.js";
 import { BOARD_SIZE, BORDER_SIZE } from "./main.js";
 
 export class Board {
@@ -11,7 +13,7 @@ export class Board {
     private board: ColorHexValue[][];
 
     constructor() {
-        this.borderColor = "#000066";
+        this.borderColor = "#282828";
         this.unfilledSquareColor = "#000000";
 
         const board: ColorHexValue[][] = Array(BOARD_SIZE);
@@ -33,7 +35,8 @@ export class Board {
         }
     }
 
-    public draw(context: CanvasRenderingContext2D, pixelsPerSquare: number) {
+    public renderFrame(pixelsPerSquare: number) {
+        const context = getContext();
         this.x = 0;
         this.y = 0;
         this.drawHorizontalBorderLine(context, pixelsPerSquare);
@@ -49,8 +52,8 @@ export class Board {
         });
     }
 
-    public setColor(color: ColorHexValue, x: number, y: number) {
-        this.board[y][x] = color;
+    public drawPiece(piece: BoardPiece) {
+        this.board[piece.y][piece.x] = piece.color;
     }
 
     private drawSquare(context: CanvasRenderingContext2D, pixelsPerSquare: number, color: ColorHexValue) {

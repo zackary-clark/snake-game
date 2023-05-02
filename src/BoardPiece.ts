@@ -1,3 +1,4 @@
+import { ColorHexValue } from "./ColorHexValue.js";
 import { BOARD_SIZE } from "./main.js";
 
 export class BoardPiece {
@@ -5,9 +6,11 @@ export class BoardPiece {
     x: number;
     // @ts-ignore
     y: number;
+    color: ColorHexValue;
 
-    constructor(x = 0, y = 0) {
+    constructor(x = 0, y = 0, color: ColorHexValue = "#000000") {
         this.setLocation(x, y);
+        this.color = color;
     }
 
     setLocation(x: number, y: number) {
@@ -27,5 +30,4 @@ export class PointOutOfBoundsError extends Error {
     constructor(x: number, y: number) {
         super(`Point ${x},${y} out of bounds - must be in ranges 0..${BOARD_SIZE}, 0..${BOARD_SIZE}`);
     }
-
 }
