@@ -1,5 +1,5 @@
 import { getCanvas, getContext } from "./canvas.js";
-import { BOARD_SIZE, BORDER_SIZE } from "./main.js";
+import { BOARD_SIZE, BORDER_SIZE } from "./config.js";
 import { BoardPiece } from "./pieces/BoardPiece.js";
 import { ColorHexValue } from "./types/ColorHexValue.js";
 

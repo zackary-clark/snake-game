@@ -1,12 +1,15 @@
+import { BOARD_SIZE } from "../config.js";
 import { Direction } from "../types/Direction.js";
 import { BoardPiece } from "./BoardPiece.js";
-import { BOARD_SIZE } from "../main.js";
+
+const defaultX = BOARD_SIZE / 4;
+const defaultY = BOARD_SIZE / 2;
 
 export class Snake {
     private head: Node;
 
     constructor() {
-        this.head = new Node(BOARD_SIZE / 4, BOARD_SIZE / 2);
+        this.head = new Node(defaultX, defaultY);
     }
 
     public traverseSnake(callback: (node: Node) => void) {
@@ -32,6 +35,10 @@ export class Snake {
                 this.head.moveRight();
                 break;
         }
+    }
+
+    public reset() {
+        this.head = new Node(defaultX, defaultY);
     }
 }
 

@@ -1,6 +1,9 @@
 import { Direction } from "./types/Direction.js";
 
-export function attachControls(setDirection: (newDirection: Direction) => void) {
+export function attachControls(
+    setDirection: (newDirection: Direction) => void,
+    resetGame: () => void,
+) {
     window.addEventListener("keydown", (event) => {
         switch (event.key) {
             case "ArrowUp":
@@ -18,6 +21,9 @@ export function attachControls(setDirection: (newDirection: Direction) => void) 
             case "ArrowRight":
             case "d":
                 setDirection("right");
+                break;
+            case "Enter":
+                resetGame();
                 break;
         }
     });

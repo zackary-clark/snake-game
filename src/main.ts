@@ -1,13 +1,10 @@
 import { attachControls } from "./attachControls.js";
 import { Board } from "./Board.js";
 import { createCanvas, resizeCanvas } from "./canvas.js";
+import { SNAKE_SPEED } from "./config.js";
 import { Food } from "./pieces/Food.js";
 import { Snake } from "./pieces/Snake.js";
 import { Direction } from "./types/Direction.js";
-
-export const BOARD_SIZE: number = 20;
-export const BORDER_SIZE: number = 2;
-export const SNAKE_SPEED: number = 10;
 
 export function main() {
     const canvas = createCanvas();
@@ -17,10 +14,18 @@ export function main() {
     const snake = new Snake();
     const food = new Food();
     let direction: Direction | null = null;
+
     const ticksBetweenMoves = 20 / SNAKE_SPEED;
     let ticksUntilMove = ticksBetweenMoves;
 
-    attachControls((newDirection: Direction) => direction = newDirection);
+    function resetGame() {
+        board.clear();
+        snake.reset();
+        food.reset();
+        direction = null;
+    }
+
+    attachControls((newDirection: Direction) => direction = newDirection, resetGame);
 
     function registerMoves() {
         ticksUntilMove--;
