@@ -1,5 +1,5 @@
-import { ColorHexValue } from "./ColorHexValue.js";
-import { BOARD_SIZE } from "./main.js";
+import { ColorHexValue } from "../types/ColorHexValue.js";
+import { BOARD_SIZE } from "../main.js";
 
 export class BoardPiece {
     // @ts-ignore
@@ -13,7 +13,7 @@ export class BoardPiece {
         this.color = color;
     }
 
-    setLocation(x: number, y: number) {
+    protected setLocation(x: number, y: number) {
         if (!this.checkLocation(x) || !this.checkLocation(y)) {
             throw new PointOutOfBoundsError(x, y);
         }

@@ -1,9 +1,13 @@
+import { attachControls } from "./attachControls.js";
 import { Board } from "./Board.js";
-import { Food } from "./Food.js";
-import { Snake } from "./Snake.js";
+import { createCanvas, resizeCanvas } from "./canvas.js";
+import { Food } from "./pieces/Food.js";
+import { Snake } from "./pieces/Snake.js";
+import { Direction } from "./types/Direction.js";
 
-export const BOARD_SIZE = 20;
-export const BORDER_SIZE = 2;
+export const BOARD_SIZE: number = 20;
+export const BORDER_SIZE: number = 2;
+export const SNAKE_SPEED: number = 10;
 
 export function main() {
     const canvas = createCanvas();
@@ -12,46 +16,35 @@ export function main() {
     const board = new Board();
     const snake = new Snake();
     const food = new Food();
+    let direction: Direction | null = null;
+    const ticksBetweenMoves = 20 / SNAKE_SPEED;
+    let ticksUntilMove = ticksBetweenMoves;
 
-    function tick() {
+    attachControls((newDirection: Direction) => direction = newDirection);
+
+    function registerMoves() {
+        ticksUntilMove--;
+        if (ticksUntilMove <= 0) {
+            ticksUntilMove = ticksBetweenMoves;
+            snake.move(direction);
+        }
+    }
+
+    function renderFrame() {
         board.clear();
-        resizeCanvas(canvas);
+        resizeCanvas();
 
         snake.traverseSnake((node) => {
             board.drawPiece(node);
         });
         board.drawPiece(food);
-        board.renderFrame(getPixelsPerSquare());
+        board.renderFrame();
+    }
+
+    function tick() {
+        registerMoves();
+        renderFrame();
     }
 
     setInterval(tick, 50);
-}
-
-function createCanvas(): HTMLCanvasElement {
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("id", "canvas");
-    canvas.style.margin = "auto";
-    canvas.style.display = "block";
-    canvas.style.position = "absolute";
-    canvas.style.top = "0";
-    canvas.style.bottom = "0";
-    canvas.style.left = "0";
-    canvas.style.right = "0";
-    return canvas;
-}
-
-function resizeCanvas(canvas: HTMLCanvasElement) {
-    canvas.width = getMaxCanvasSize();
-    canvas.height = getMaxCanvasSize();
-}
-
-function getPixelsPerSquare(): number {
-    const borderTotal = (BOARD_SIZE + 1) * BORDER_SIZE;
-    return (getMaxCanvasSize() - borderTotal) / BOARD_SIZE;
-}
-
-function getMaxCanvasSize(): number {
-    // TODO: Should this be memoized or based on browser events?
-    // When improving the performance, benchmark it somehow
-    return Math.min(window.innerHeight, window.innerWidth);
 }

@@ -1,7 +1,7 @@
-import { BoardPiece } from "./BoardPiece.js";
-import { ColorHexValue } from "./ColorHexValue.js";
-import { getContext } from "./getContext.js";
+import { getCanvas, getContext } from "./canvas.js";
 import { BOARD_SIZE, BORDER_SIZE } from "./main.js";
+import { BoardPiece } from "./pieces/BoardPiece.js";
+import { ColorHexValue } from "./types/ColorHexValue.js";
 
 export class Board {
     private borderColor: ColorHexValue;
@@ -35,8 +35,9 @@ export class Board {
         }
     }
 
-    public renderFrame(pixelsPerSquare: number) {
+    public renderFrame() {
         const context = getContext();
+        const pixelsPerSquare = this.getPixelsPerSquare();
         this.x = 0;
         this.y = 0;
         this.drawHorizontalBorderLine(context, pixelsPerSquare);
@@ -73,5 +74,11 @@ export class Board {
         context.fillStyle = this.borderColor;
         context.fillRect(this.x, this.y, borderLength, BORDER_SIZE);
         this.y += BORDER_SIZE;
+    }
+
+    private getPixelsPerSquare(): number {
+        const canvas = getCanvas();
+        const borderTotal = (BOARD_SIZE + 1) * BORDER_SIZE;
+        return (canvas.height - borderTotal) / BOARD_SIZE;
     }
 }

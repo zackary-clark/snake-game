@@ -1,5 +1,5 @@
 import { BoardPiece } from "./BoardPiece.js";
-import { BOARD_SIZE } from "./main.js";
+import { BOARD_SIZE } from "../main.js";
 
 export class Food extends BoardPiece {
     constructor() {
