@@ -15,16 +15,20 @@ export class Snake {
         this.isAlive = true;
     }
 
-    public traverseSnake(callback: (node: Node) => void) {
+    /*
+    * Callback return value is used to short circuit.
+    * Returning true will immediately end the traversal.
+    * */
+    public traverseSnake(callback: (node: Node) => boolean | void) {
         let curr: Node | null = this.head;
         while (curr) {
-            callback(curr)
+            if (callback(curr)) return;
             curr = curr.next;
         }
     }
 
     public move(direction: Direction | null, food: Food) {
-        if (!this.isAlive) return;
+        if (!this.isAlive || !direction) return;
         let newX = this.head.x;
         let newY = this.head.y;
         let shouldGrow = false;
@@ -43,7 +47,7 @@ export class Snake {
                 break;
         }
 
-        if (this.detectWallHit(newX, newY)) {
+        if (this.detectWallHit(newX, newY) || this.detectSelfHit(newX, newY)) {
             this.die();
             return;
         }
@@ -91,6 +95,17 @@ export class Snake {
 
     private detectWallHit(newX: number, newY: number): boolean {
         return newX < 0 || newX >= BOARD_SIZE || newY < 0 || newY >= BOARD_SIZE;
+    }
+
+    private detectSelfHit(newX: number, newY: number): boolean {
+        let hit = false;
+        this.traverseSnake(node => {
+            if (node.x === newX && node.y === newY) {
+                hit = true;
+                return true;
+            }
+        });
+        return hit;
     }
 }
 
