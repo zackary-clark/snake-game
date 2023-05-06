@@ -12,4 +12,15 @@ export class Food extends BoardPiece {
     reset() {
         this.setLocation(defaultX, defaultY);
     }
+
+    eat() {
+        // TODO: this should ensure we don't "spawn" food on top of the snake
+        const x = Food.randomCoord();
+        const y = Food.randomCoord();
+        this.setLocation(x, y)
+    }
+
+    private static randomCoord(): number {
+        return Math.floor(Math.random() * BOARD_SIZE)
+    }
 }

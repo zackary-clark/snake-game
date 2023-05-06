@@ -42,7 +42,7 @@ export function main() {
         ticksUntilMove--;
         if (ticksUntilMove <= 0) {
             ticksUntilMove = ticksBetweenMoves;
-            snake.move(direction);
+            snake.move(direction, food);
         }
         renderFrame();
     }

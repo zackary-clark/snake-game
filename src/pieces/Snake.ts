@@ -1,6 +1,7 @@
 import { BOARD_SIZE } from "../config";
 import { Direction } from "../types/Direction";
 import { BoardPiece } from "./BoardPiece";
+import { Food } from "./Food";
 
 const defaultX = BOARD_SIZE / 4;
 const defaultY = BOARD_SIZE / 2;
@@ -22,42 +23,35 @@ export class Snake {
         }
     }
 
-    public move(direction: Direction | null) {
+    public move(direction: Direction | null, food: Food) {
         if (!this.isAlive) return;
+        let newX = this.head.x;
+        let newY = this.head.y;
+        let shouldGrow = false;
         switch (direction) {
             case "up":
-                const upY = this.head.y - 1;
-                if (upY < 0) {
-                    this.die();
-                    return;
-                }
-                this.head.setLocation(this.head.x, upY);
+                newY = this.head.y - 1;
                 break;
             case "down":
-                const downY = this.head.y + 1;
-                if (downY >= BOARD_SIZE) {
-                    this.die();
-                    return;
-                }
-                this.head.setLocation(this.head.x, downY);
+                newY = this.head.y + 1;
                 break;
             case "left":
-                const leftX = this.head.x - 1;
-                if (leftX < 0) {
-                    this.die();
-                    return;
-                }
-                this.head.setLocation(leftX, this.head.y);
+                newX = this.head.x - 1;
                 break;
             case "right":
-                const rightX = this.head.x + 1;
-                if (rightX >= BOARD_SIZE) {
-                    this.die();
-                    return;
-                }
-                this.head.setLocation(rightX, this.head.y);
+                newX = this.head.x + 1;
                 break;
         }
+
+        if (this.detectWallHit(newX, newY)) {
+            this.die();
+            return;
+        }
+        if (this.detectFoodHit(food, newX, newY)) {
+            food.eat();
+            shouldGrow = true;
+        }
+        this.relocateNodes(newX, newY, shouldGrow);
     }
 
     public reset() {
@@ -70,6 +64,33 @@ export class Snake {
         this.traverseSnake(node => {
             node.setColor("#C0C0C0");
         });
+    }
+
+    private relocateNodes(newX: number, newY: number, shouldGrow: boolean) {
+        let node: Node | null = this.head;
+        let prev: Node | null = null;
+        let x = newX;
+        let y = newY;
+        while (node) {
+            const prevX = node.x;
+            const prevY = node.y;
+            node.setLocation(x, y);
+            x = prevX;
+            y = prevY
+            prev = node;
+            node = node.next;
+        }
+        if (shouldGrow && prev) {
+            prev.next = new Node(x, y);
+        }
+    }
+
+    private detectFoodHit(food: Food, newX: number, newY: number): boolean {
+        return newX === food.x && newY === food.y;
+    }
+
+    private detectWallHit(newX: number, newY: number): boolean {
+        return newX < 0 || newX >= BOARD_SIZE || newY < 0 || newY >= BOARD_SIZE;
     }
 }
 
