@@ -1,5 +1,5 @@
-import { BOARD_SIZE } from "../config.js";
-import { ColorHexValue } from "../types/ColorHexValue.js";
+import { BOARD_SIZE } from "../config";
+import { ColorHexValue } from "../types/ColorHexValue";
 
 export class BoardPiece {
     // @ts-ignore

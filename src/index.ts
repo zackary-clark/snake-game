@@ -1,5 +1,5 @@
-import { main } from "./main.js";
+import { main } from "./main";
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
     main();
 });

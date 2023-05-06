@@ -1,10 +1,10 @@
-import { attachControls } from "./attachControls.js";
-import { Board } from "./Board.js";
-import { createCanvas, resizeCanvas } from "./canvas.js";
-import { SNAKE_SPEED } from "./config.js";
-import { Food } from "./pieces/Food.js";
-import { Snake } from "./pieces/Snake.js";
-import { Direction } from "./types/Direction.js";
+import { attachControls } from "./attachControls";
+import { Board } from "./Board";
+import { createCanvas, resizeCanvas } from "./canvas";
+import { SNAKE_SPEED } from "./config";
+import { Food } from "./pieces/Food";
+import { Snake } from "./pieces/Snake";
+import { Direction } from "./types/Direction";
 
 export function main() {
     const canvas = createCanvas();

@@ -1,7 +1,7 @@
-import { getCanvas, getContext } from "./canvas.js";
-import { BOARD_SIZE, BORDER_SIZE } from "./config.js";
-import { BoardPiece } from "./pieces/BoardPiece.js";
-import { ColorHexValue } from "./types/ColorHexValue.js";
+import { getCanvas, getContext } from "./canvas";
+import { BOARD_SIZE, BORDER_SIZE } from "./config";
+import { BoardPiece } from "./pieces/BoardPiece";
+import { ColorHexValue } from "./types/ColorHexValue";
 
 export class Board {
     private borderColor: ColorHexValue;

@@ -1,6 +1,6 @@
-import { BOARD_SIZE } from "../config.js";
-import { Direction } from "../types/Direction.js";
-import { BoardPiece } from "./BoardPiece.js";
+import { BOARD_SIZE } from "../config";
+import { Direction } from "../types/Direction";
+import { BoardPiece } from "./BoardPiece";
 
 const defaultX = BOARD_SIZE / 4;
 const defaultY = BOARD_SIZE / 2;

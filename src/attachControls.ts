@@ -1,4 +1,4 @@
-import { Direction } from "./types/Direction.js";
+import { Direction } from "./types/Direction";
 
 export function attachControls(
     setDirection: (newDirection: Direction) => void,
