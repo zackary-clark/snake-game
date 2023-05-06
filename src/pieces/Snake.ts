@@ -1,13 +1,12 @@
 import { BOARD_SIZE } from "../config";
 import { Direction } from "../types/Direction";
 import { BoardPiece } from "./BoardPiece";
-import { Food } from "./Food";
 
 const defaultX = BOARD_SIZE / 4;
 const defaultY = BOARD_SIZE / 2;
 
 export class Snake {
-    private head: Node;
+    private readonly head: Node;
     private isAlive: boolean;
 
     constructor() {
@@ -27,11 +26,12 @@ export class Snake {
         }
     }
 
-    public move(direction: Direction | null, food: Food) {
+    public move(direction: Direction | null, detectFoodHit: (newHeadX: number, newHeadY: number) => boolean) {
         if (!this.isAlive || !direction) return;
         let newX = this.head.x;
         let newY = this.head.y;
         let shouldGrow = false;
+
         switch (direction) {
             case "up":
                 newY = this.head.y - 1;
@@ -51,16 +51,9 @@ export class Snake {
             this.die();
             return;
         }
-        if (this.detectFoodHit(food, newX, newY)) {
-            food.eat();
-            shouldGrow = true;
-        }
-        this.relocateNodes(newX, newY, shouldGrow);
-    }
+        shouldGrow = detectFoodHit(newX, newY);
 
-    public reset() {
-        this.isAlive = true;
-        this.head = new Node(defaultX, defaultY);
+        this.relocateNodes(newX, newY, shouldGrow);
     }
 
     public die() {
@@ -87,10 +80,6 @@ export class Snake {
         if (shouldGrow && prev) {
             prev.next = new Node(x, y);
         }
-    }
-
-    private detectFoodHit(food: Food, newX: number, newY: number): boolean {
-        return newX === food.x && newY === food.y;
     }
 
     private detectWallHit(newX: number, newY: number): boolean {
