@@ -1,12 +1,22 @@
 {
     "name": "snake-game",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": true,
     "description": "Basic snake game, eventually seeking to have a \"perfect\" player AI",
     "main": "src/index.ts",
     "scripts": {
+        "prebuild": "npm install",
         "build": "rm -r dist && tsc && vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "docker:buildx86": "docker build ./ --platform=linux/amd64 -t us-central1-docker.pkg.dev/deft-bazaar-370800/snake-game/snake-game:$npm_package_version -t us-central1-docker.pkg.dev/deft-bazaar-370800/snake-game/snake-game:latest",
+        "docker:buildrelease": "npm run build && npm run docker:buildx86",
+        "docker:check": "./scripts/checkForDockerDaemon.sh",
+        "docker:pushrelease": "docker push us-central1-docker.pkg.dev/deft-bazaar-370800/snake-game/snake-game:$npm_package_version && docker push us-central1-docker.pkg.dev/deft-bazaar-370800/snake-game/snake-game:latest",
+        "docker:release": "npm run docker:buildrelease && npm run docker:pushrelease",
+        "gcp:release": "gcloud run deploy snake-game --image us-central1-docker.pkg.dev/deft-bazaar-370800/snake-game/snake-game:latest",
+        "git:pushtags": "git push --tags && git push",
+        "preversion": "npm run docker:check",
+        "postversion": "npm run git:pushtags && npm run docker:release && sleep 5 && npm run gcp:release"
     },
     "license": "GPL-3.0-only",
     "devDependencies": {
