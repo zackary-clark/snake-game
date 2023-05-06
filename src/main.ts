@@ -27,14 +27,6 @@ export function main() {
 
     attachControls((newDirection: Direction) => direction = newDirection, resetGame);
 
-    function registerMoves() {
-        ticksUntilMove--;
-        if (ticksUntilMove <= 0) {
-            ticksUntilMove = ticksBetweenMoves;
-            snake.move(direction);
-        }
-    }
-
     function renderFrame() {
         board.clear();
         resizeCanvas();
@@ -47,7 +39,11 @@ export function main() {
     }
 
     function tick() {
-        registerMoves();
+        ticksUntilMove--;
+        if (ticksUntilMove <= 0) {
+            ticksUntilMove = ticksBetweenMoves;
+            snake.move(direction);
+        }
         renderFrame();
     }
 

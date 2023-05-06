@@ -13,7 +13,11 @@ export class BoardPiece {
         this.color = color;
     }
 
-    protected setLocation(x: number, y: number) {
+    public setColor(newColor: ColorHexValue) {
+        this.color = newColor;
+    }
+
+    setLocation(x: number, y: number) {
         if (!this.checkLocation(x) || !this.checkLocation(y)) {
             throw new PointOutOfBoundsError(x, y);
         }
