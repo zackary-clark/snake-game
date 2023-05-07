@@ -6,8 +6,42 @@
     <title>Snake Game</title>
     <script type="module" src="/src/index.ts"></script>
     <link rel="icon" href="/static/favicon.png">
+
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            color: antiquewhite;
+        }
+
+        #container {
+            margin: auto;
+            display: flex;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        #scoreboard {
+            margin: 1em;
+        }
+    </style>
 </head>
-<body style="margin:0;background-color:black;">
+<body>
+
+<div id="container">
+    <canvas id="canvas"></canvas>
+    <div id="info-panel-container">
+        <div id="info-panel">
+            <div id="scoreboard">
+                <h2>Score:</h2>
+                <p id="score"></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

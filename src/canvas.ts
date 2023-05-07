@@ -1,9 +1,7 @@
+import { getElementById } from "./helpers";
+
 export function getCanvas(): HTMLCanvasElement {
-    const canvas = document.getElementById("canvas");
-    if (!canvas) {
-        throw new Error("No Canvas Found!");
-    }
-    return canvas as HTMLCanvasElement;
+    return getElementById("canvas");
 }
 
 export function getContext(): CanvasRenderingContext2D {
@@ -14,22 +12,21 @@ export function getContext(): CanvasRenderingContext2D {
     return context;
 }
 
-export function createCanvas(): HTMLCanvasElement {
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("id", "canvas");
-    canvas.style.margin = "auto";
-    canvas.style.display = "block";
-    canvas.style.position = "absolute";
-    canvas.style.top = "0";
-    canvas.style.bottom = "0";
-    canvas.style.left = "0";
-    canvas.style.right = "0";
-    return canvas;
-}
-
 export function resizeCanvas() {
+    const canvasToScoreRatio = 4 / 5;
+    const isHeightLimited = window.innerHeight < (canvasToScoreRatio * window.innerWidth);
+    const containerHeight = isHeightLimited ? window.innerHeight : window.innerWidth * canvasToScoreRatio;
+    const containerWidth = isHeightLimited ? window.innerHeight * (1 / canvasToScoreRatio) : window.innerWidth;
+
+    const container = getElementById<HTMLDivElement>("container");
+    container.style.width = `${containerWidth}px`;
+    container.style.height = `${containerHeight}px`;
+
     const canvas = getCanvas();
-    const size = Math.min(window.innerHeight, window.innerWidth);
-    canvas.width = size;
-    canvas.height = size;
+    canvas.width = containerWidth * canvasToScoreRatio;
+    canvas.height = containerHeight;
+
+    const infoPanelContainer = getElementById<HTMLDivElement>("info-panel-container");
+    infoPanelContainer.style.width = `${containerWidth * (1 - canvasToScoreRatio)}px`;
+    infoPanelContainer.style.height = `${containerHeight}px`;
 }

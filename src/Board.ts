@@ -1,24 +1,18 @@
 import { getCanvas, getContext } from "./canvas";
-import { BOARD_SIZE, BORDER_SIZE } from "./config";
+import { BOARD_SIZE, BORDER_COLOR, BORDER_SIZE, UNFILLED_SQUARE_COLOR } from "./config";
 import { BoardPiece } from "./pieces/BoardPiece";
 import { ColorHexValue } from "./types/ColorHexValue";
 
 export class Board {
-    private borderColor: ColorHexValue;
-    private unfilledSquareColor: ColorHexValue;
-
     private x: number;
     private y: number;
 
     private board: ColorHexValue[][];
 
     constructor() {
-        this.borderColor = "#282828";
-        this.unfilledSquareColor = "#000000";
-
         const board: ColorHexValue[][] = Array(BOARD_SIZE);
         for (let i = 0; i < BOARD_SIZE; i++) {
-            board[i] = Array(BOARD_SIZE).fill(this.unfilledSquareColor);
+            board[i] = Array(BOARD_SIZE).fill(UNFILLED_SQUARE_COLOR);
         }
         this.board = board;
 
@@ -30,7 +24,7 @@ export class Board {
         for (let i = 0; i < this.board.length; i++) {
             const row = this.board[i];
             for (let j = 0; j < row.length; j++) {
-                row[j] = this.unfilledSquareColor;
+                row[j] = UNFILLED_SQUARE_COLOR;
             }
         }
     }
@@ -64,14 +58,14 @@ export class Board {
     }
 
     private drawVerticalBorderLine(context: CanvasRenderingContext2D, pixelsPerSquare: number) {
-        context.fillStyle = this.borderColor;
+        context.fillStyle = BORDER_COLOR;
         context.fillRect(this.x, this.y, BORDER_SIZE, pixelsPerSquare);
         this.x += BORDER_SIZE;
     }
 
     private drawHorizontalBorderLine(context: CanvasRenderingContext2D, pixelsPerSquare: number) {
         const borderLength = BORDER_SIZE + (BOARD_SIZE * pixelsPerSquare) + (BOARD_SIZE * BORDER_SIZE);
-        context.fillStyle = this.borderColor;
+        context.fillStyle = BORDER_COLOR;
         context.fillRect(this.x, this.y, borderLength, BORDER_SIZE);
         this.y += BORDER_SIZE;
     }
