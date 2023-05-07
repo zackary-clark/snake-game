@@ -24,7 +24,6 @@ export function main() {
     let direction: Direction | null = null;
     let score = 0;
 
-    const msPerTick = 1000 / TICKS_PER_SECOND;
     const ticksBetweenMoves = Math.round(TICKS_PER_SECOND / SNAKE_SPEED);
     let ticksUntilMove = ticksBetweenMoves;
 
@@ -52,12 +51,11 @@ export function main() {
         board.renderFrame();
     }
 
-    function eatFood() {
+    function eatFood(newHeadX: number, newHeadY: number): void {
         food = new Food();
+        if (detectFoodHit(newHeadX, newHeadY)) return eatFood(newHeadX, newHeadY);
         snake.traverseSnake(node => {
-            if (detectFoodHit(node.x, node.y)) {
-                return eatFood();
-            }
+            if (detectFoodHit(node.x, node.y)) return eatFood(newHeadX, newHeadY);
         });
     }
 
@@ -69,7 +67,7 @@ export function main() {
         const hit = detectFoodHit(newHeadX, newHeadY);
         if (hit) {
             score++;
-            eatFood();
+            eatFood(newHeadX, newHeadY);
         }
         return hit;
     }
@@ -83,5 +81,5 @@ export function main() {
         renderFrame();
     }
 
-    setInterval(tick, msPerTick);
+    setInterval(tick, 1000 / TICKS_PER_SECOND);
 }
