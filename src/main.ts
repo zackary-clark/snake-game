@@ -1,3 +1,4 @@
+import { Naive } from "./ai/naive/Naive";
 import { attachControls } from "./attachControls";
 import { Board } from "./Board";
 import { resizeCanvas } from "./canvas";
@@ -21,6 +22,7 @@ export function main() {
     const board = new Board();
     let snake = new Snake();
     let food = new Food(defaultFoodX, defaultFoodY);
+    const naive = new Naive();
     let direction: Direction | null = null;
     let score = 0;
 
@@ -77,6 +79,7 @@ export function main() {
         if (ticksUntilMove <= 0) {
             ticksUntilMove = ticksBetweenMoves;
             snake.move(direction, eatFoodIfHit);
+            if (snake.isAlive) direction = naive.move(snake, food);
         }
         renderFrame();
     }

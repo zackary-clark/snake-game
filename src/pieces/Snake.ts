@@ -1,4 +1,5 @@
 import { BOARD_SIZE } from "../config";
+import { calcNewPosition } from "../helpers";
 import { Direction } from "../types/Direction";
 import { BoardPiece } from "./BoardPiece";
 
@@ -7,7 +8,7 @@ const defaultY = BOARD_SIZE / 2;
 
 export class Snake {
     private readonly head: Node;
-    private isAlive: boolean;
+    public isAlive: boolean;
 
     constructor() {
         this.head = new Node(defaultX, defaultY);
@@ -28,24 +29,8 @@ export class Snake {
 
     public move(direction: Direction | null, detectFoodHit: (newHeadX: number, newHeadY: number) => boolean) {
         if (!this.isAlive || !direction) return;
-        let newX = this.head.x;
-        let newY = this.head.y;
         let shouldGrow = false;
-
-        switch (direction) {
-            case "up":
-                newY = this.head.y - 1;
-                break;
-            case "down":
-                newY = this.head.y + 1;
-                break;
-            case "left":
-                newX = this.head.x - 1;
-                break;
-            case "right":
-                newX = this.head.x + 1;
-                break;
-        }
+        const [newX, newY] = calcNewPosition(this.head, direction);
 
         if (this.detectWallHit(newX, newY) || this.detectSelfHit(newX, newY)) {
             this.die();
