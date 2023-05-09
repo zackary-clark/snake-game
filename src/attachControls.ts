@@ -1,9 +1,16 @@
 import { Direction } from "./types/Direction";
 
-export function attachControls(
-    setDirection: (newDirection: Direction) => void,
-    resetGame: () => void,
-) {
+interface ControlCallbacks {
+    setDirection: (newDirection: Direction) => void;
+    resetGame: () => void;
+    toggleAIMode: () => void;
+}
+
+export function attachControls({
+    setDirection,
+    resetGame,
+    toggleAIMode,
+}: ControlCallbacks) {
     window.addEventListener("keydown", (event) => {
         switch (event.key) {
             case "ArrowUp":
@@ -24,6 +31,9 @@ export function attachControls(
                 break;
             case "Enter":
                 resetGame();
+                break;
+            case " ":
+                toggleAIMode();
                 break;
         }
     });

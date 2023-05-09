@@ -22,7 +22,8 @@ export function main() {
     const board = new Board();
     let snake = new Snake();
     let food = new Food(defaultFoodX, defaultFoodY);
-    const naive = new Naive();
+    const ai = new Naive();
+    let aiMode = false;
     let direction: Direction | null = null;
     let score = 0;
 
@@ -37,7 +38,11 @@ export function main() {
         score = 0;
     }
 
-    attachControls((newDirection: Direction) => direction = newDirection, resetGame);
+    attachControls({
+        setDirection: (newDirection: Direction) => direction = newDirection,
+        resetGame: resetGame,
+        toggleAIMode: () => aiMode = !aiMode,
+    });
 
     function renderFrame() {
         board.clear();
@@ -79,7 +84,7 @@ export function main() {
         if (ticksUntilMove <= 0) {
             ticksUntilMove = ticksBetweenMoves;
             snake.move(direction, eatFoodIfHit);
-            if (snake.isAlive) direction = naive.move(snake, food);
+            if (snake.isAlive && aiMode) direction = ai.move(snake, food);
         }
         renderFrame();
     }

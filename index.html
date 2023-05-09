@@ -24,7 +24,13 @@
             right: 0;
         }
 
-        #scoreboard {
+        #info-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #info-panel > div {
             margin: 1em;
         }
     </style>
@@ -38,6 +44,10 @@
             <div id="scoreboard">
                 <h2>Score:</h2>
                 <p id="score"></p>
+            </div>
+            <div id="controls">
+                <p><strong>Enter:</strong> Reset</p>
+                <p><strong>Space:</strong> Toggle AI</p>
             </div>
         </div>
     </div>
