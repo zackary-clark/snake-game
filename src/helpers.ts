@@ -1,17 +1,22 @@
 import { BOARD_SIZE } from "./config";
 import { BoardPiece } from "./pieces/BoardPiece";
+import { ColorHexValue } from "./types/ColorHexValue";
 import { Direction } from "./types/Direction";
 
 export function randomCoord(): number {
     return Math.floor(Math.random() * BOARD_SIZE);
 }
 
-export function getElementById<T>(id: string): T {
+export function getElementById<T = HTMLDivElement>(id: string): T {
     const element = document.getElementById(id);
     if (!element) {
         throw new Error(`${id} Not Found!`);
     }
     return element as T;
+}
+
+export function getCSSVar(varName: string): ColorHexValue {
+    return <`#${string}`>getComputedStyle(document.documentElement).getPropertyValue(`--${varName}`);
 }
 
 export function calcNewPosition(piece: BoardPiece, direction: Direction): number[];

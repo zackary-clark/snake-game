@@ -1,5 +1,5 @@
 import { BOARD_SIZE } from "../config";
-import { calcNewPosition } from "../helpers";
+import { calcNewPosition, getCSSVar } from "../helpers";
 import { Direction } from "../types/Direction";
 import { BoardPiece } from "./BoardPiece";
 
@@ -87,7 +87,7 @@ class Node extends BoardPiece {
     next: Node | null;
 
     constructor(x?: number , y?: number) {
-        super(x, y, "#35DE00");
+        super(x, y, getCSSVar('green_10'));
         this.next = null;
     }
 }

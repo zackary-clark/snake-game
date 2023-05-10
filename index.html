@@ -6,34 +6,9 @@
     <title>Snake Game</title>
     <script type="module" src="/src/index.ts"></script>
     <link rel="icon" href="/static/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/stylesheets/index.css">
 
-    <style>
-        body {
-            margin: 0;
-            background-color: black;
-            color: antiquewhite;
-        }
-
-        #container {
-            margin: auto;
-            display: flex;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-        #info-panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        #info-panel > div {
-            margin: 1em;
-        }
-    </style>
 </head>
 <body>
 
@@ -42,8 +17,38 @@
     <div id="info-panel-container">
         <div id="info-panel">
             <div id="scoreboard">
-                <h2>Score:</h2>
+                <h1>Score:</h1>
                 <p id="score"></p>
+            </div>
+            <div id="high-scores">
+                <h2>High Scores:</h2>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>min</th>
+                        <th>avg</th>
+                        <th>max</th>
+                    </tr>
+                    <tr>
+                        <td class="player">You</td>
+                        <td class="min" id="human-min"></td>
+                        <td class="avg" id="human-avg"></td>
+                        <td class="max" id="human-max"></td>
+                    </tr>
+                    <tr>
+                        <td class="player tooltip">
+                            Naive
+                            <div class="tooltiptext">
+                                <p>This "AI" is as naive as possible, while still being somewhat useful.</p>
+                                <p>It simply attempts to move the snake head toward the food.</p>
+                                <p>And it won't make a move that would kill it (unless it has to).</p>
+                            </div>
+                        </td>
+                        <td class="min" id="naive-min"></td>
+                        <td class="avg" id="naive-avg"></td>
+                        <td class="max" id="naive-max"></td>
+                    </tr>
+                </table>
             </div>
             <div id="controls">
                 <p><strong>Enter:</strong> Reset</p>
