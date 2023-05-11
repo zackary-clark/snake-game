@@ -1,15 +1,16 @@
+import { aiType } from "./ai/ai";
 import { Direction } from "./types/Direction";
 
 interface ControlCallbacks {
     setDirection: (newDirection: Direction) => void;
     resetGame: () => void;
-    toggleAIMode: () => void;
+    changeAIMode: (type: aiType) => void;
 }
 
 export function attachControls({
     setDirection,
     resetGame,
-    toggleAIMode,
+    changeAIMode,
 }: ControlCallbacks) {
     window.addEventListener("keydown", (event) => {
         switch (event.key) {
@@ -30,10 +31,14 @@ export function attachControls({
                 setDirection("right");
                 break;
             case "Enter":
+            case "Escape":
                 resetGame();
                 break;
-            case " ":
-                toggleAIMode();
+            case "n":
+                changeAIMode("naive");
+                break;
+            case "m":
+                changeAIMode("human");
                 break;
         }
     });

@@ -1,3 +1,4 @@
+import { aiType } from "./ai/ai";
 import { getElementById } from "./helpers";
 
 interface StoredHighScore {
@@ -13,9 +14,9 @@ export class HighScore {
     public max: number;
 
     private games: number;
-    private player: string;
+    private player: aiType;
 
-    constructor(playerName: string) {
+    constructor(playerName: aiType) {
         this.player = playerName;
 
         const stored = this.getLocalStorage();
@@ -36,7 +37,7 @@ export class HighScore {
         this.setLocalStorage();
     }
 
-    renderScores() {
+    renderScore() {
         getElementById<HTMLTableCellElement>(`${this.player}-min`).textContent = this.min?.toFixed(0) ?? "0";
         getElementById<HTMLTableCellElement>(`${this.player}-avg`).textContent = this.avg.toFixed(0);
         getElementById<HTMLTableCellElement>(`${this.player}-max`).textContent = this.max.toFixed(0);

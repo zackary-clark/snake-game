@@ -1,4 +1,4 @@
-import { Naive } from "./ai/naive/Naive";
+import { AI, aiFactory, aiType } from "./ai/ai";
 import { attachControls } from "./attachControls";
 import { Board } from "./Board";
 import { resizeCanvas } from "./canvas";
@@ -24,8 +24,7 @@ export function main() {
     let snake = new Snake();
     let food = new Food(defaultFoodX, defaultFoodY);
 
-    const ai = new Naive();
-    let aiMode = false;
+    let ai: AI | undefined;
     let direction: Direction | null = null;
 
     let score = 0;
@@ -45,12 +44,13 @@ export function main() {
 
     attachControls({
         setDirection: (newDirection: Direction) => {
-            if (!aiMode) {
-                direction = newDirection
-            }
+            if (!ai) direction = newDirection
         },
         resetGame: resetGame,
-        toggleAIMode: () => aiMode = !aiMode,
+        changeAIMode: (type: aiType) => {
+            resetGame();
+            ai = aiFactory(type);
+        }
     });
 
     function renderFrame() {
@@ -60,8 +60,8 @@ export function main() {
         const scoreElement = getElementById<HTMLParagraphElement>("score");
         scoreElement.textContent = score.toString();
 
-        humanHighScore.renderScores();
-        naiveHighScore.renderScores();
+        humanHighScore.renderScore();
+        naiveHighScore.renderScore();
 
         snake.traverseSnake((node) => {
             board.drawPiece(node);
@@ -92,8 +92,16 @@ export function main() {
     }
 
     function endGame() {
-        if (!aiMode) humanHighScore.addNewScore(score);
-        else naiveHighScore.addNewScore(score);
+        switch (ai?.type) {
+            case "naive":
+                naiveHighScore.addNewScore(score);
+                break;
+            case "human":
+            case undefined:
+            default:
+                humanHighScore.addNewScore(score);
+                break;
+        }
     }
 
     function tick() {
@@ -102,7 +110,7 @@ export function main() {
             ticksUntilMove = ticksBetweenMoves;
             snake.move(direction, eatFoodIfHit);
             if (!snake.isAlive) endGame();
-            if (snake.isAlive && aiMode) direction = ai.move(snake, food);
+            if (snake.isAlive && ai) direction = ai.move(snake, food);
         }
         renderFrame();
     }
