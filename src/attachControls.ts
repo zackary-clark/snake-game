@@ -34,6 +34,9 @@ export function attachControls({
             case "Escape":
                 resetGame();
                 break;
+            case "j":
+                changeAIMode("dijkstra");
+                break;
             case "n":
                 changeAIMode("naive");
                 break;

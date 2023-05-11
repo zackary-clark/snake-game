@@ -30,6 +30,7 @@ export function main() {
     let score = 0;
     const humanHighScore = new HighScore("human");
     const naiveHighScore = new HighScore("naive");
+    const dijkstraHighScore = new HighScore("dijkstra");
 
     const ticksBetweenMoves = Math.round(TICKS_PER_SECOND / SNAKE_SPEED);
     let ticksUntilMove = ticksBetweenMoves;
@@ -62,6 +63,7 @@ export function main() {
 
         humanHighScore.renderScore();
         naiveHighScore.renderScore();
+        dijkstraHighScore.renderScore();
 
         snake.traverseSnake((node) => {
             board.drawPiece(node);
@@ -93,6 +95,9 @@ export function main() {
 
     function endGame() {
         switch (ai?.type) {
+            case "dijkstra":
+                dijkstraHighScore.addNewScore(score);
+                break;
             case "naive":
                 naiveHighScore.addNewScore(score);
                 break;
@@ -110,7 +115,9 @@ export function main() {
             ticksUntilMove = ticksBetweenMoves;
             snake.move(direction, eatFoodIfHit);
             if (!snake.isAlive) endGame();
-            if (snake.isAlive && ai) direction = ai.move(snake, food);
+            if (snake.isAlive && ai) {
+                direction = ai.move(snake, food);
+            }
         }
         renderFrame();
     }

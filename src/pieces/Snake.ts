@@ -7,11 +7,11 @@ const defaultX = BOARD_SIZE / 4;
 const defaultY = BOARD_SIZE / 2;
 
 export class Snake {
-    private readonly head: Node;
+    private readonly head: SnakePart;
     public isAlive: boolean;
 
     constructor() {
-        this.head = new Node(defaultX, defaultY);
+        this.head = new SnakePart(defaultX, defaultY);
         this.isAlive = true;
     }
 
@@ -19,8 +19,8 @@ export class Snake {
     * Callback return value is used to short circuit.
     * Returning true will immediately end the traversal.
     * */
-    public traverseSnake(callback: (node: Node) => boolean | void) {
-        let curr: Node | null = this.head;
+    public traverseSnake(callback: (node: SnakePart) => boolean | void) {
+        let curr: SnakePart | null = this.head;
         while (curr) {
             if (callback(curr)) return;
             curr = curr.next;
@@ -49,8 +49,8 @@ export class Snake {
     }
 
     private relocateNodes(newX: number, newY: number, shouldGrow: boolean) {
-        let node: Node | null = this.head;
-        let prev: Node | null = null;
+        let node: SnakePart | null = this.head;
+        let prev: SnakePart | null = null;
         let x = newX;
         let y = newY;
         while (node) {
@@ -63,7 +63,7 @@ export class Snake {
             node = node.next;
         }
         if (shouldGrow && prev) {
-            prev.next = new Node(x, y);
+            prev.next = new SnakePart(x, y);
         }
     }
 
@@ -83,8 +83,8 @@ export class Snake {
     }
 }
 
-class Node extends BoardPiece {
-    next: Node | null;
+class SnakePart extends BoardPiece {
+    next: SnakePart | null;
 
     constructor(x?: number , y?: number) {
         super(x, y, getCSSVar('green_10'));
