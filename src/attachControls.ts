@@ -5,12 +5,16 @@ interface ControlCallbacks {
     setDirection: (newDirection: Direction) => void;
     resetGame: () => void;
     changeAIMode: (type: aiType) => void;
+    lowerSpeed: () => void;
+    raiseSpeed: () => void;
 }
 
 export function attachControls({
     setDirection,
     resetGame,
     changeAIMode,
+    lowerSpeed,
+    raiseSpeed,
 }: ControlCallbacks) {
     window.addEventListener("keydown", (event) => {
         switch (event.key) {
@@ -33,6 +37,13 @@ export function attachControls({
             case "Enter":
             case "Escape":
                 resetGame();
+                break;
+            case "-":
+                lowerSpeed();
+                break;
+            case "=":
+            case "+":
+                raiseSpeed();
                 break;
             case "j":
                 changeAIMode("dijkstra");

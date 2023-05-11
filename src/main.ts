@@ -2,7 +2,7 @@ import { AI, aiFactory, aiType } from "./ai/ai";
 import { attachControls } from "./attachControls";
 import { Board } from "./Board";
 import { resizeCanvas } from "./canvas";
-import { BOARD_SIZE, BORDER_COLOR, BORDER_SIZE, SNAKE_SPEED, TICKS_PER_SECOND } from "./config";
+import { BOARD_SIZE, BORDER_COLOR, BORDER_SIZE } from "./config";
 import { getElementById } from "./helpers";
 import { HighScore } from "./HighScore";
 import { Food } from "./pieces/Food";
@@ -11,10 +11,11 @@ import { Direction } from "./types/Direction";
 
 const defaultFoodX = 3 * (BOARD_SIZE / 4);
 const defaultFoodY = BOARD_SIZE / 2;
+const borderStyle = `${BORDER_SIZE}px solid ${BORDER_COLOR}`;
+const speedOptions = [10, 20, 50, 100, 200, 500];
 
 export function main() {
     const infoPanel = getElementById<HTMLDivElement>("info-panel");
-    const borderStyle = `${BORDER_SIZE}px solid ${BORDER_COLOR}`;
     infoPanel.style.borderTop = borderStyle;
     infoPanel.style.borderBottom = borderStyle;
     infoPanel.style.borderRight = borderStyle;
@@ -26,14 +27,12 @@ export function main() {
 
     let ai: AI | undefined;
     let direction: Direction | null = null;
+    let speed: number = 0;
 
     let score = 0;
     const humanHighScore = new HighScore("human");
     const naiveHighScore = new HighScore("naive");
     const dijkstraHighScore = new HighScore("dijkstra");
-
-    const ticksBetweenMoves = Math.round(TICKS_PER_SECOND / SNAKE_SPEED);
-    let ticksUntilMove = ticksBetweenMoves;
 
     function resetGame() {
         board.clear();
@@ -51,6 +50,16 @@ export function main() {
         changeAIMode: (type: aiType) => {
             resetGame();
             ai = aiFactory(type);
+        },
+        lowerSpeed: () => {
+            if (speed > 0) {
+                speed--;
+            }
+        },
+        raiseSpeed: () => {
+            if (speed < speedOptions.length - 1) {
+                speed++;
+            }
         }
     });
 
@@ -110,9 +119,7 @@ export function main() {
     }
 
     function tick() {
-        ticksUntilMove--;
-        if (snake.isAlive && ticksUntilMove <= 0) {
-            ticksUntilMove = ticksBetweenMoves;
+        if (snake.isAlive) {
             snake.move(direction, eatFoodIfHit);
             if (!snake.isAlive) endGame();
             if (snake.isAlive && ai) {
@@ -122,5 +129,10 @@ export function main() {
         renderFrame();
     }
 
-    setInterval(tick, 1000 / TICKS_PER_SECOND);
+    (function loop() {
+        setTimeout(() => {
+            tick();
+            loop();
+        }, 1000 / speedOptions[speed]);
+    })();
 }
