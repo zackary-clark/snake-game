@@ -68,6 +68,10 @@ body {
     padding: 0.5em;
 }
 
+.tooltip {
+    text-decoration: underline dotted;
+}
+
 .tooltip .tooltiptext {
     visibility: hidden;
     background-color: var(--bg4);
@@ -81,4 +85,10 @@ body {
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
+}
+
+select {
+    background-color: var(--bg2);
+    color: var(--fg0);
+    font-family: 'Fira Code', monospace;
 }

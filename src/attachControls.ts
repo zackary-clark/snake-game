@@ -1,4 +1,5 @@
 import { aiType } from "./ai/ai";
+import { getElementById } from "./helpers";
 import { Direction } from "./types/Direction";
 
 interface ControlCallbacks {
@@ -45,15 +46,11 @@ export function attachControls({
             case "+":
                 raiseSpeed();
                 break;
-            case "j":
-                changeAIMode("dijkstra");
-                break;
-            case "n":
-                changeAIMode("naive");
-                break;
-            case "m":
-                changeAIMode("human");
-                break;
         }
     });
+    const playerSelect = getElementById<HTMLSelectElement>("player");
+    playerSelect.addEventListener("change", (event) => {
+        // @ts-ignore
+        changeAIMode(event.target.value)
+    })
 }
