@@ -3,6 +3,7 @@ import { Food } from "../../pieces/Food";
 import { Snake } from "../../pieces/Snake";
 import { Direction } from "../../types/Direction";
 import { AI, aiType } from "../ai";
+import { Naive } from "../naive/Naive";
 
 export class Dijkstra implements AI {
     public type: aiType = "dijkstra";
@@ -10,9 +11,11 @@ export class Dijkstra implements AI {
     // @ts-ignore
     private target: Node | null;
     private shortestPath: Direction[];
+    private naiveBackup: Naive;
 
     constructor() {
         this.shortestPath = [];
+        this.naiveBackup = new Naive();
     }
 
     public move(snake: Snake, food: Food): Direction {
@@ -26,7 +29,7 @@ export class Dijkstra implements AI {
         });
         // @ts-ignore
         this.shortestPath = this.findShortestPath(head, this.target, snakeParts);
-        return this.shortestPath.shift() ?? "up";
+        return this.shortestPath.shift() ?? this.naiveBackup.move(snake, food);
     }
 
     private findShortestPath(start: Node, target: Node, snakeParts: Node[]): Direction[] {
@@ -125,7 +128,7 @@ class Node {
 
     public calcNewPosition(direction: Direction): Node {
         let newX = this.x;
-        let newY = this.y
+        let newY = this.y;
 
         switch (direction) {
             case "up":
