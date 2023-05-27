@@ -1,5 +1,5 @@
-import { aiType } from "./ai/ai";
-import { getElementById } from "./helpers";
+import { AIType } from "../ai/ai";
+import { getElementById } from "../helpers";
 
 interface StoredHighScore {
     min: number;
@@ -14,9 +14,9 @@ export class HighScore {
     public max: number;
 
     private games: number;
-    private player: aiType;
+    private player: AIType;
 
-    constructor(playerName: aiType) {
+    constructor(playerName: AIType) {
         this.player = playerName;
 
         const stored = this.getLocalStorage();

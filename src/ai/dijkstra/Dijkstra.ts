@@ -2,11 +2,11 @@ import { BOARD_SIZE } from "../../config";
 import { Food } from "../../pieces/Food";
 import { Snake } from "../../pieces/Snake";
 import { Direction } from "../../types/Direction";
-import { AI, aiType } from "../ai";
+import { AI, AIType } from "../ai";
 import { Naive } from "../naive/Naive";
 
 export class Dijkstra implements AI {
-    public type: aiType = "dijkstra";
+    public type: AIType = AIType.dijkstra;
 
     // @ts-ignore
     private target: Node | null;

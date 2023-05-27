@@ -5,19 +5,23 @@ import { Dijkstra } from "./dijkstra/Dijkstra";
 import { Naive } from "./naive/Naive";
 
 export interface AI {
-    type: aiType;
+    type: AIType;
     move: (snake: Snake, food: Food) => Direction;
 }
 
-export type aiType = "human" | "naive" | "dijkstra";
+export enum AIType {
+    human = "human",
+    naive = "naive",
+    dijkstra = "dijkstra",
+}
 
-export function aiFactory(type: aiType): AI | undefined {
+export function createAI(type: AIType): AI | undefined {
     switch (type) {
-        case "dijkstra":
+        case AIType.dijkstra:
             return new Dijkstra();
-        case "naive":
+        case AIType.naive:
             return new Naive();
-        case "human":
+        case AIType.human:
         case undefined:
         default:
             return undefined;

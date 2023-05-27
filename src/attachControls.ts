@@ -1,11 +1,11 @@
-import { aiType } from "./ai/ai";
+import { AIType } from "./ai/ai";
 import { getElementById } from "./helpers";
 import { Direction } from "./types/Direction";
 
 interface ControlCallbacks {
     setDirection: (newDirection: Direction) => void;
     resetGame: () => void;
-    changeAIMode: (type: aiType) => void;
+    changeAIMode: (type: AIType) => void;
     lowerSpeed: () => void;
     raiseSpeed: () => void;
 }

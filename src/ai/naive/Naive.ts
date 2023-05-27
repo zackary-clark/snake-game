@@ -3,10 +3,10 @@ import { calcNewPosition } from "../../helpers";
 import { Food } from "../../pieces/Food";
 import { Snake } from "../../pieces/Snake";
 import { Direction } from "../../types/Direction";
-import { AI, aiType } from "../ai";
+import { AI, AIType } from "../ai";
 
 export class Naive implements AI {
-    public type: aiType = "naive";
+    public type: AIType = AIType.naive;
 
     constructor() {}
 

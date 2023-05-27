@@ -1,10 +1,10 @@
-import { AI, aiFactory, aiType } from "./ai/ai";
+import { AI, createAI, AIType } from "./ai/ai";
 import { attachControls } from "./attachControls";
 import { Board } from "./Board";
 import { resizeCanvas } from "./canvas";
 import { BOARD_SIZE, BORDER_COLOR, BORDER_SIZE } from "./config";
 import { getElementById } from "./helpers";
-import { HighScore } from "./HighScore";
+import { HighScores } from "./HighScores/HighScores";
 import { Food } from "./pieces/Food";
 import { Snake } from "./pieces/Snake";
 import { Direction } from "./types/Direction";
@@ -30,9 +30,7 @@ export function main() {
     let speed: number = 0;
 
     let score = 0;
-    const humanHighScore = new HighScore("human");
-    const naiveHighScore = new HighScore("naive");
-    const dijkstraHighScore = new HighScore("dijkstra");
+    const highScores = new HighScores();
 
     function resetGame() {
         board.clear();
@@ -47,9 +45,9 @@ export function main() {
             if (!ai) direction = newDirection
         },
         resetGame: resetGame,
-        changeAIMode: (type: aiType) => {
+        changeAIMode: (type: AIType) => {
             resetGame();
-            ai = aiFactory(type);
+            ai = createAI(type);
         },
         lowerSpeed: () => {
             if (speed > 0) {
@@ -70,9 +68,7 @@ export function main() {
         const scoreElement = getElementById<HTMLParagraphElement>("score");
         scoreElement.textContent = score.toString();
 
-        humanHighScore.renderScore();
-        naiveHighScore.renderScore();
-        dijkstraHighScore.renderScore();
+        highScores.renderScores();
 
         snake.traverseSnake((node) => {
             board.drawPiece(node);
@@ -103,19 +99,7 @@ export function main() {
     }
 
     function endGame() {
-        switch (ai?.type) {
-            case "dijkstra":
-                dijkstraHighScore.addNewScore(score);
-                break;
-            case "naive":
-                naiveHighScore.addNewScore(score);
-                break;
-            case "human":
-            case undefined:
-            default:
-                humanHighScore.addNewScore(score);
-                break;
-        }
+        highScores.addNewScore(score, ai?.type);
     }
 
     function tick() {

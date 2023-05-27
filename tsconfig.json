@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "es6",
+        "lib": ["ES2017", "dom"],
         "allowJs": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
@@ -8,7 +9,7 @@
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist",
         "sourceMap": false,
-        "noImplicitAny": true,
+        "noImplicitAny": true
     },
     "include": ["src"],
     "exclude": ["node_modules"]
