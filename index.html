@@ -60,6 +60,18 @@
                         <td class="avg" id="dijkstra-avg"></td>
                         <td class="max" id="dijkstra-max"></td>
                     </tr>
+                    <tr>
+                        <td class="player tooltip">
+                            Cycle
+                            <div class="tooltiptext">
+                                <p>This strategy produces a perfect score every time.</p>
+                                <p>The snake simply follows a Hamiltonian Cycle around the board.</p>
+                            </div>
+                        </td>
+                        <td class="min" id="hamiltonianCycle-min"></td>
+                        <td class="avg" id="hamiltonianCycle-avg"></td>
+                        <td class="max" id="hamiltonianCycle-max"></td>
+                    </tr>
                 </table>
             </div>
             <div id="controls">
@@ -71,6 +83,7 @@
                     <option value="manual">Manual</option>
                     <option value="naive">Naive AI</option>
                     <option value="dijkstra">Dijkstra's Algorithm</option>
+                    <option value="hamiltonianCycle">Hamiltonian Cycle</option>
                 </select>
             </div>
         </div>

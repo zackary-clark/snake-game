@@ -23,7 +23,7 @@ export function main() {
 
     const board = new Board();
     let snake = new Snake();
-    let food = new Food(defaultFoodX, defaultFoodY);
+    let food: Food | undefined = new Food(defaultFoodX, defaultFoodY);
 
     let ai: AI | undefined;
     let direction: Direction | null = null;
@@ -73,7 +73,7 @@ export function main() {
         snake.traverseSnake((node) => {
             board.drawPiece(node);
         });
-        board.drawPiece(food);
+        food && board.drawPiece(food);
         board.renderFrame();
     }
 
@@ -86,14 +86,16 @@ export function main() {
     }
 
     function detectFoodHit(x: number, y: number): boolean {
-        return food.x === x && food.y === y;
+        return food?.x === x && food?.y === y;
     }
 
     function eatFoodIfHit(newHeadX: number, newHeadY: number): boolean {
         const hit = detectFoodHit(newHeadX, newHeadY);
+        const isPossibleToSpawnNewFood = score < (BOARD_SIZE * BOARD_SIZE - 2);
         if (hit) {
             score++;
-            eatFood(newHeadX, newHeadY);
+            if (isPossibleToSpawnNewFood) eatFood(newHeadX, newHeadY);
+            else food = undefined;
         }
         return hit;
     }

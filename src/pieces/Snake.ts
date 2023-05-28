@@ -27,6 +27,14 @@ export class Snake {
         }
     }
 
+    public getHeadX(): number {
+        return this.head.x;
+    }
+
+    public getHeadY(): number {
+        return this.head.y;
+    }
+
     public move(direction: Direction | null, detectFoodHit: (newHeadX: number, newHeadY: number) => boolean) {
         if (!this.isAlive || !direction) return;
         let shouldGrow = false;

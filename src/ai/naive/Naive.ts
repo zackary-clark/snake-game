@@ -8,9 +8,7 @@ import { AI, AIType } from "../ai";
 export class Naive implements AI {
     public type: AIType = AIType.naive;
 
-    constructor() {}
-
-    public move(snake: Snake, food: Food): Direction {
+    public move(snake: Snake, food: Food | undefined): Direction {
         const snakeCoords: number[][] = [];
         const directionOptions: Direction[] = ["right", "up", "left", "down"];
 
@@ -21,12 +19,14 @@ export class Naive implements AI {
         });
 
         const snakeHeadCoords = snakeCoords[0];
-        const foodCoords = [food.x, food.y];
+        if (food) {
+            const foodCoords = [food.x, food.y];
 
-        directionOptions.sort((a, b) => {
-            return this.calcNewDistance(snakeHeadCoords, foodCoords, a) -
-                this.calcNewDistance(snakeHeadCoords, foodCoords, b);
-        });
+            directionOptions.sort((a, b) => {
+                return this.calcNewDistance(snakeHeadCoords, foodCoords, a) -
+                    this.calcNewDistance(snakeHeadCoords, foodCoords, b);
+            });
+        }
         directionOptions.sort((a, b) => {
             let ret = 0;
             if (this.checkForSnakeSelfCollision(snakeHeadCoords, snake, a) ||
