@@ -8,7 +8,7 @@ import { AI, AIType } from "../ai";
 export class Naive implements AI {
     public type: AIType = AIType.naive;
 
-    public move(snake: Snake, food: Food | undefined): Direction {
+    public move(snake: Snake, food?: Food): Direction {
         const snakeCoords: number[][] = [];
         const directionOptions: Direction[] = ["right", "up", "left", "down"];
 

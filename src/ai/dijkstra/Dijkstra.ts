@@ -18,7 +18,7 @@ export class Dijkstra implements AI {
         this.naiveBackup = new Naive();
     }
 
-    public move(snake: Snake, food: Food | undefined): Direction {
+    public move(snake: Snake, food?: Food): Direction {
         if (!food) return this.naiveBackup.move(snake, food);
         if (this.target && this.target.matches(food.x, food.y) && this.shortestPath.length > 0) return this.shortestPath.shift() as Direction;
         this.target = new Node(food.x, food.y);

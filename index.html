@@ -72,6 +72,20 @@
                         <td class="avg" id="hamiltonianCycle-avg"></td>
                         <td class="max" id="hamiltonianCycle-max"></td>
                     </tr>
+                    <tr>
+                        <td class="player tooltip">
+                            Cycle w/ Shortcuts
+                            <div class="tooltiptext">
+                                <p>This strategy is nearly the same as the Hamiltonian Cycle.</p>
+                                <p>
+                                    It gets to a perfect score significantly faster, though, by shortcutting the cycle whenever it's safe to do so.
+                                </p>
+                            </div>
+                        </td>
+                        <td class="min" id="shortcutCycle-min"></td>
+                        <td class="avg" id="shortcutCycle-avg"></td>
+                        <td class="max" id="shortcutCycle-max"></td>
+                    </tr>
                 </table>
             </div>
             <div id="controls">
@@ -84,6 +98,7 @@
                     <option value="naive">Naive AI</option>
                     <option value="dijkstra">Dijkstra's Algorithm</option>
                     <option value="hamiltonianCycle">Hamiltonian Cycle</option>
+                    <option value="shortcutCycle">Cycle with Shortcuts</option>
                 </select>
             </div>
         </div>
