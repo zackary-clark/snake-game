@@ -1,76 +1,33 @@
 import { BOARD_SIZE } from "../../config";
+import { calcNewPosition } from "../../helpers";
 import { Snake } from "../../pieces/Snake";
 import { Direction } from "../../types/Direction";
 import { AI, AIType } from "../ai";
+import { buildCycle } from "./buildCycle";
 
 export class HamiltonianCycle implements AI {
     public type = AIType.hamiltonianCycle;
 
-    private cycle: Direction[][];
+    private readonly cycle: number[][];
 
     constructor() {
-        this.cycle = this.buildCycle();
+        this.cycle = buildCycle();
     }
 
     move(snake: Snake): Direction {
-        return this.cycle[snake.getHeadY()][snake.getHeadX()];
-    }
+        let direction: Direction = "right";
+        const headWeight = this.cycle[snake.getHeadY()][snake.getHeadX()];
+        let nextWeight = headWeight + 1;
+        if (headWeight >= (BOARD_SIZE*BOARD_SIZE - 1)) nextWeight = 0;
 
-    private buildCycle(): Direction[][] {
-        const board: Direction[][] = [];
+        const directionOptions: Direction[] = ["right", "up", "left", "down"];
+        directionOptions.forEach(dir => {
+            const newPos = calcNewPosition(snake.getHeadX(), snake.getHeadY(), dir);
+            if (!newPos.every(val => val < BOARD_SIZE && val >= 0)) return;
 
-        board[0] = this.firstRow();
-        for (let i = 1; i < BOARD_SIZE - 1; i++) {
-            board[i] = i % 2 === 0 ? this.evenRow() : this.oddRow();
-        }
-        board[BOARD_SIZE - 1] = this.lastRow();
+            if (this.cycle[newPos[1]][newPos[0]] === nextWeight) direction = dir;
+        });
 
-        return board;
-    }
-
-    private firstRow(): Direction[] {
-        const row: Direction[] = [];
-
-        for (let i = 0; i < BOARD_SIZE - 1; i++) {
-            row[i] = "right";
-        }
-        row.push("down");
-
-        return row;
-    }
-
-    private oddRow(): Direction[] {
-        const row: Direction[] = [];
-
-        row.push("up");
-        row.push("down")
-        for (let i = 2; i < BOARD_SIZE; i++) {
-            row[i] = "left";
-        }
-
-        return row;
-    }
-
-    private evenRow(): Direction[] {
-        const row: Direction[] = [];
-
-        row.push("up");
-        for (let i = 1; i < BOARD_SIZE - 1; i++) {
-            row[i] = "right";
-        }
-        row.push("down");
-
-        return row;
-    }
-
-    private lastRow(): Direction[] {
-        const row: Direction[] = [];
-
-        row.push("up");
-        for (let i = 1; i < BOARD_SIZE; i++) {
-            row[i] = "left";
-        }
-
-        return row;
+        return direction;
     }
 }
